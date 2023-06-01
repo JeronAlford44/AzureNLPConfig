@@ -1,5 +1,6 @@
 from flask import Flask,jsonify, request
 import datetime
+import os
 
 
 from firebase_admin import credentials, firestore, initialize_app
@@ -7,8 +8,11 @@ from firebase_admin import credentials, firestore, initialize_app
 
 
 app = Flask(__name__)
-cred = credentials.Certificate('firebase_key.json')
-default_app = initialize_app(cred)
+cred = credentials.Certificate(os.environ.get('FIREBASE_CREDENTIALS'))
+if cred is not None: 
+    default_app = initialize_app(cred)
+else:
+    quit()
 db = firestore.client()
 
 @app.route('/')
