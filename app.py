@@ -1,4 +1,4 @@
-from flask import Flask,jsonify, request
+from flask import Flask,jsonify, request, redirect
 import datetime
 import os
 
@@ -31,24 +31,20 @@ def ADD_USER_MSG_BY_ID(id, msg):
     }
     )
 @app.route('/push', methods = ["POST"])
-def processjson():
-    return request.json['msg']
+def RECEIVE_MESSAGE():
+    msg = request.json.get('msg')
+    if msg is not None:
+        return redirect(f'/process-msg/msg={msg}')
+    else:
+        raise Exception('System Error: Request is invalid and cannot be accessed')
 
-@app.route('/get')
+@app.route('/get', methods = ["GET"] )
 def getjson():
     return jsonify({"msg": 'Thanks for using our api'})
 
-@app.route('/about')
-def about():
-    return 'About Page Route'
 
-
-@app.route('/portfolio')
-def portfolio():
-    return 'Portfolio Page Route'
-
-
-@app.route('/contact')
-def contact():
-    return 'Contact Page Route'
+@app.route('/process-msg/msg=<string:msg>')
+def PROCESS_MESSAGE(msg):
+    #process message here for chatbot
+    return f'Your message is: {msg}'
 
