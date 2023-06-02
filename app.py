@@ -46,5 +46,5 @@ def getjson():
 @app.route('/process-msg/msg=<string:msg>')
 def PROCESS_MESSAGE(msg):
     #process message here for chatbot
-    return f'Your message is: {msg}'
+    return f'Your message is:', msg.replace('%20', ' ')
 
