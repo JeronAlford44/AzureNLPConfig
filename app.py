@@ -1,6 +1,7 @@
 from flask import Flask,jsonify, request, redirect
 import datetime
 import os
+from process_msg import process_msg
 
 # import firebase_admin
 # from firebase_admin import credentials, firestore, initialize_app
@@ -19,17 +20,7 @@ app = Flask(__name__)
 def home():
     return 'Home Page Route'
 
-@app.route("/users/id=<string:id>/msg=<string:msg>", methods=['POST', 'GET'])
-def ADD_USER_MSG_BY_ID(id, msg):
-    # db_ref = db.collection('Users').document(id)
-    # db_ref.update({
-    #     f'info.ChatLogs.{msg}': firestore.SERVER_TIMESTAMP
-    # }
-    # )
-    return jsonify({
-        f"{msg}": datetime.datetime.now().timestamp()
-    }
-    )
+
 @app.route('/push', methods = ["POST"])
 def RECEIVE_MESSAGE():
     msg = request.json.get('msg')
@@ -38,13 +29,12 @@ def RECEIVE_MESSAGE():
     else:
         raise Exception('System Error: Request is invalid and cannot be accessed')
 
-@app.route('/get', methods = ["GET"] )
-def getjson():
-    return jsonify({"msg": 'Thanks for using our api'})
 
 
-@app.route('/process-msg/msg=<string:msg>')
-def PROCESS_MESSAGE(msg):
+
+@app.route('/process-msg/name=<string:name>/msg=<string:msg>')
+def PROCESS_MESSAGE(name, msg):
     #process message here for chatbot
+    process_msg(msg.replace('%20', ' '))
     return f'Your message is:', msg.replace('%20', ' ')
 
