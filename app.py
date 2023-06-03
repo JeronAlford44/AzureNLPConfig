@@ -26,17 +26,25 @@ def home():
 @app.route('/push', methods = ["POST"])
 def RECEIVE_MESSAGE():
     msg = request.json.get('msg')
-    if msg is not None:
-        return redirect(f'/process-msg/msg={msg}')
-    else:
-        raise Exception('System Error: Request is invalid and cannot be accessed')
-
-
-
-
-@app.route('/process-msg/id=<string:id>/name=<string:name>/msg=<string:msg>')
-def PROCESS_MESSAGE(id, name, msg):
+    id = request.json.get('id')
+    name = request.json.get('name')
+    if not (msg or id or name):
+         raise Exception('System Error: Request is invalid and cannot be accessed')
+    def PROCESS_MESSAGE(id, name, msg):
     #process message here for chatbot
-    process_msg(msg.replace('%20', ' '), name)
-    return f'Your message is:', msg.replace('%20', ' ')
+        return process_msg(msg.replace('%20', ' '), name)
+        return f'Your message is:', msg.replace('%20', ' ')
+   
+    
+    
+       
+
+
+
+
+# @app.route('/process-msg/id=<string:id>/name=<string:name>/msg=<string:msg>')
+# def PROCESS_MESSAGE(id, name, msg):
+#     #process message here for chatbot
+#     process_msg(msg.replace('%20', ' '), name)
+#     return f'Your message is:', msg.replace('%20', ' ')
 
