@@ -2,6 +2,7 @@ from flask import Flask,jsonify, request, redirect
 import datetime
 import os
 from process_msg import process_msg
+from flask_cors import CORS
 
 # import firebase_admin
 # from firebase_admin import credentials, firestore, initialize_app
@@ -9,6 +10,7 @@ from process_msg import process_msg
 
 
 app = Flask(__name__)
+CORS(app)
 # cred = credentials.Certificate(os.environ.get('FIREBASE_CREDENTIALS'))
 # if cred is not None: 
 #     default_app = initialize_app(cred)
