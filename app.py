@@ -34,6 +34,7 @@ def RECEIVE_MESSAGE():
     #process message here for chatbot
         return process_msg(msg.replace('%20', ' '), name)
         return f'Your message is:', msg.replace('%20', ' ')
+    return PROCESS_MESSAGE(id, name, msg)
    
     
     
