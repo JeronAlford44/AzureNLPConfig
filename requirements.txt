@@ -1,3 +1,2 @@
-Flask
-# firebase_admin
-
+Flask>=2.0
+Flask-Cors>=3.0
