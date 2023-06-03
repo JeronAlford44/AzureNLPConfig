@@ -34,9 +34,9 @@ def RECEIVE_MESSAGE():
 
 
 
-@app.route('/process-msg/name=<string:name>/msg=<string:msg>')
-def PROCESS_MESSAGE(name, msg):
+@app.route('/process-msg/id=<string:id>/name=<string:name>/msg=<string:msg>')
+def PROCESS_MESSAGE(id, name, msg):
     #process message here for chatbot
-    process_msg(msg.replace('%20', ' '))
+    process_msg(msg.replace('%20', ' '), name)
     return f'Your message is:', msg.replace('%20', ' ')
 
