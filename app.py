@@ -24,9 +24,9 @@ def home():
 @app.route('/push', methods = ["POST"])
 def RECEIVE_MESSAGE():
     msg = request.json.get('msg')
-    uid = request.json.get('id')
+    uid = request.json.get('uid')
     name = request.json.get('name')
-    if not (msg and id and name):
+    if not (msg and uid and name):
          return Exception('System Error: Request is invalid and cannot be accessed')
    # Replace YOUR_CLIENT_ID and YOUR_TENANT_ID with your own values
     CLIENT_ID = '10d9a82c-a84d-4891-91f5-e7f3f18cd5f2'
