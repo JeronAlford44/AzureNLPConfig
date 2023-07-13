@@ -4,8 +4,8 @@ import os
 from process_msg import process_msg
 from flask_cors import CORS
 import requests
-from botframework.connector import ConnectorClient
-from botframework.connector.auth import AzureActiveDirectoryAuthentication
+# from botframework.connector import ConnectorClient
+# from botframework.connector.auth import AzureActiveDirectoryAuthentication
 
 
 
