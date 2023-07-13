@@ -53,7 +53,7 @@ def RECEIVE_MESSAGE():
     response = client.conversations.send_to_conversation(conversation_id, activity)
 
     # Print the response
-    print(response)
+    return (response)
   
 
 # # Replace YOUR_DIRECT_LINE_SECRET with your bot's Direct Line secret
