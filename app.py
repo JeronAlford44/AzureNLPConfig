@@ -31,7 +31,7 @@ def RECEIVE_MESSAGE():
    # Replace YOUR_CLIENT_ID and YOUR_TENANT_ID with your own values
     CLIENT_ID = '10d9a82c-a84d-4891-91f5-e7f3f18cd5f2'
     TENANT_ID = '0376eb4b-c206-4056-9061-e342dc2ecda8'
-
+    return CLIENT_ID
     # Get the access token for the Bot Framework API
     auth = AzureActiveDirectoryAuthentication(CLIENT_ID, TENANT_ID)
     access_token = auth.get_access_token()
