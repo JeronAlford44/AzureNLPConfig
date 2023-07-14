@@ -23,10 +23,7 @@ def home():
 
 @app.route('/push_msg_data', methods = ["GET","POST"])
 def MessageActivityHandler():
-    class ActivityHandler():
-        def __init__(self):
-            pass
-        pass
+    return "ActivityHandler"
     #START CONVERSATION
     #Send ACTIVITY
     #TRY TO GET RESPONSE
@@ -71,52 +68,84 @@ def MessageActivityHandler():
     #     }
     #     response = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=headers)
     #     return response.json()
-    @app.route('/RECONNECT', methods = ["GET"])
-    def RECONNECT():   
-        headers = {
-        'Authorization': 'Bearer ' + direct_line_secret,
-        }
-        requests.get(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}?watermark={watermark}', headers= headers)
+@app.route('/RECONNECT', methods = ["GET"])
+def RECONNECT():   
+    direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
+    msg = request.json.get('msg')
+    uid = request.json.get('uid')
+    name = request.json.get('name')
+    conversation_id = request.json.get('conversation_id')
+    locale = request.json.get('locale')
+    watermark = request.json.get('watermark')
+    """after "/StartConversation" is handled"""
+    conversation_id = request.json.get('conversation_id')
+    streamUrl = request.json.get('streamUrl').replace("watermark=-&","")
+    headers = {
+    'Authorization': 'Bearer ' + direct_line_secret,
+    }
+    requests.get(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}?watermark={watermark}', headers= headers)
 
-        pass
-    @app.route('/POST_MESSAGE', methods = ["GET"])
-    def POST_MESSAGE():
-        headers = {
-        'Authorization': 'Bearer ' + direct_line_secret,
-        'Content-Type': 'application/json',
-       
-        }
-        data = {
-            'type': 'message',
-            'from': {
-                'id': uid
-            },
-            'text': msg
-            }
-        response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=headers, json=data)
-        return response.status_code, response.json()
-    @app.route('/GET_MESSAGE', methods = ["GET"])
-    def RETURN_MESSAGE():
-        headers = {
+    pass
+@app.route('/POST_MESSAGE', methods = ["GET"])
+def POST_MESSAGE():
+    direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
+    msg = request.json.get('msg')
+    uid = request.json.get('uid')
+    # name = request.json.get('name')
+    conversation_id = request.json.get('conversation_id')
+    # locale = request.json.get('locale')
+    # watermark = request.json.get('watermark')
+    """after "/StartConversation" is handled"""
+    conversation_id = request.json.get('conversation_id')
+   
+    headers = {
     'Authorization': 'Bearer ' + direct_line_secret,
     'Content-Type': 'application/json',
-    "Upgrade": "websocket",
-    "Connection": "upgrade",
-    }
-        GET_MSG_RESPONSE = requests.get(streamUrl, headers=headers)
-        response = GET_MSG_RESPONSE.json()
-        status_code = GET_MSG_RESPONSE.status_code
-        watermark = response.get('watermark')
-        return response, status_code, response.get('watermark')
-    #CODE 101 = SWITCHING PROTOCOLS
-# Set the parameters for the request
     
-    return "ActivityHandler"
-   
+    }
+    data = {
+        'type': 'message',
+        'from': {
+            'id': uid
+        },
+        'text': msg
+        }
+    response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=headers, json=data)
+    return response.status_code, response.json()
+@app.route('/GET_MESSAGE', methods = ["GET"])
+def RETURN_MESSAGE():
+    direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
+    msg = request.json.get('msg')
+    uid = request.json.get('uid')
+    name = request.json.get('name')
+    conversation_id = request.json.get('conversation_id')
+    locale = request.json.get('locale')
+    watermark = request.json.get('watermark')
+    """after "/StartConversation" is handled"""
+    conversation_id = request.json.get('conversation_id')
+    streamUrl = request.json.get('streamUrl').replace("watermark=-&","")
+    headers = {
+'Authorization': 'Bearer ' + direct_line_secret,
+'Content-Type': 'application/json',
+"Upgrade": "websocket",
+"Connection": "upgrade",
+}
+    GET_MSG_RESPONSE = requests.get(streamUrl, headers=headers)
+    response = GET_MSG_RESPONSE.json()
+    status_code = GET_MSG_RESPONSE.status_code
+    watermark = response.get('watermark')
+    return response, status_code, response.get('watermark')
+#CODE 101 = SWITCHING PROTOCOLS
+# Set the parameters for the request
+
+
+
 
 @app.route('/START_CONVERSATION', methods = ["GET"])
 def StartConversation():
     direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
+    
+   
    
     headers = {
     'Authorization': 'Bearer ' + direct_line_secret,
