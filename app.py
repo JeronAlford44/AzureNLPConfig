@@ -27,6 +27,7 @@ def RECEIVE_MESSAGE():
     uid = request.json.get('uid')
     name = request.json.get('name')
     conversation_id = request.json.get('conversation_id')
+    watermark = request.json.get('watermark')
     direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
     if not (msg and uid and name):
          return Exception('System Error: Request is invalid and cannot be accessed')
@@ -43,15 +44,15 @@ def RECEIVE_MESSAGE():
         },
         'text': msg
     }
-
+  
     # Send the request to the Direct Line API
-    response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/L2Za2bSAcnFGDZCYF5hT3r-us/activities', json=data, headers=headers)
+    response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', json=data, headers=headers)
 
     # Print the response status code
     print(response.status_code)
     return response.json()
-@app.route('/GET_CONVERSATION_ID', methods = ["GET"])
-def GET_COVERSATION_ID():
+@app.route('/GET_CONVERSATION', methods = ["GET"])
+def GET_COVERSATION():
     direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
    
     headers = {
@@ -59,7 +60,8 @@ def GET_COVERSATION_ID():
     'Content-Type': 'application/json'
     }
     response = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=headers)
-    return response.json().get('conversationId')
+    return response.json()
+    return jsonify({"conversationID": response.json().get('conversationId'), "streamUrl": response.json().get('streamUrl')})
 
 
 # # Replace YOUR_DIRECT_LINE_SECRET with your bot's Direct Line secret
