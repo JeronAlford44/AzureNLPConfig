@@ -46,7 +46,7 @@ def RECEIVE_MESSAGE():
     }
   
     # Send the request to the Direct Line API
-    response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', json=data, headers=headers)
+    response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities/watermark={watermark}', json=data, headers=headers)
 
     # Print the response status code
     print(response.status_code)
