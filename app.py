@@ -39,9 +39,9 @@ def RECEIVE_MESSAGE():
     data = {
         'type': 'message',
         'from': {
-            'id': 'YOUR_USER_ID'
+            'id': uid
         },
-        'text': 'Hello, world!'
+        'text': msg
     }
 
     # Send the request to the Direct Line API
