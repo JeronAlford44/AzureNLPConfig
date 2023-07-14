@@ -123,14 +123,15 @@ def RETURN_MESSAGE():
     watermark = request.json.get('watermark')
     """after "/StartConversation" is handled"""
     conversation_id = request.json.get('conversation_id')
-    streamUrl = request.json.get('streamUrl').replace("watermark=-&","")
+    streamUrl = request.json.get('streamUrl')
+    #.replace("watermark=-&","")
     headers = {
 'Authorization': 'Bearer ' + direct_line_secret,
 'Content-Type': 'application/json',
 "Upgrade": "websocket",
 "Connection": "upgrade",
 }   
-    return "working"
+    
     GET_MSG_RESPONSE = requests.get(streamUrl, headers=headers)
     response = GET_MSG_RESPONSE.json()
     status_code = GET_MSG_RESPONSE.status_code
