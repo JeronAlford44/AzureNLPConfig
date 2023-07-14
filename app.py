@@ -50,10 +50,16 @@ def RECEIVE_MESSAGE():
     # Print the response status code
     print(response.status_code)
     return response.json()
-@app.route('/GET_COVERSATION_ID', methods = ["GET"])
+@app.route('/GET_CONVERSATION_ID', methods = ["GET"])
 def GET_COVERSATION_ID():
-    response = requests.post('https://directline.botframework.com/v3/directline/conversations')
-    return response.json().get('conversationId')
+    direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
+   
+    headers = {
+    'Authorization': 'Bearer ' + direct_line_secret,
+    'Content-Type': 'application/json'
+    }
+    response = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=headers)
+    return response.json()
 
 
 # # Replace YOUR_DIRECT_LINE_SECRET with your bot's Direct Line secret
