@@ -21,49 +21,110 @@ def home():
 
 #     return jsonify({"msg" : "Thanks for logging in, how can I assist you today?"})
 
-@app.route('/push', methods = ["POST"])
-def RECEIVE_MESSAGE():
+@app.route('/push_msg_data', methods = ["GET","POST"])
+def MessageActivityHandler():
+    class ActivityHandler():
+        def __init__(self):
+            pass
+        pass
+    #START CONVERSATION
+    #Send ACTIVITY
+    #TRY TO GET RESPONSE
+    #IF WEBSOCKET CONNECTION FAILS, RECONNECT TO WEBSOCKET
+    #GET RESPONSE
+    direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
     msg = request.json.get('msg')
     uid = request.json.get('uid')
     name = request.json.get('name')
     conversation_id = request.json.get('conversation_id')
+    locale = request.json.get('locale')
     watermark = request.json.get('watermark')
-    direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
+    """after "/StartConversation" is handled"""
+    conversation_id = request.json.get('conversation_id')
+    streamUrl = request.json.get('streamUrl').replace("watermark=-&","")
+    #.replace('https://', 'wss://').replace('watermark=-&','')
+    
+ 
+    
     if not (msg and uid and name):
          return Exception('System Error: Request is invalid and cannot be accessed')
-    headers = {
+    # headers = {
+    # 'Authorization': 'Bearer ' + direct_line_secret,
+    # 'Content-Type': 'application/json',
+    # "Upgrade": "websocket",
+    # "Connection": "upgrade",
+    # }
+    # data = {
+    #     'type': 'message',
+    #     'from': {
+    #         'id': uid
+    #     },
+    #     'text': msg
+    # }
+    # def GET_COVERSATION():
+    #     direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
+    
+    #     headers = {
+    #     'Authorization': 'Bearer ' + direct_line_secret,
+    #     'Content-Type': 'application/json',
+        
+    #     }
+    #     response = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=headers)
+    #     return response.json()
+    @app.route('/RECONNECT', methods = ["GET"])
+    def RECONNECT():   
+        headers = {
+        'Authorization': 'Bearer ' + direct_line_secret,
+        }
+        requests.get(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}?watermark={watermark}', headers= headers)
+
+        pass
+    @app.route('/POST_MESSAGE', methods = ["GET"])
+    def POST_MESSAGE():
+        headers = {
+        'Authorization': 'Bearer ' + direct_line_secret,
+        'Content-Type': 'application/json',
+       
+        }
+        data = {
+            'type': 'message',
+            'from': {
+                'id': uid
+            },
+            'text': msg
+            }
+        response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=headers, json=data)
+        return response.status_code, response.json()
+    @app.route('/GET_MESSAGE', methods = ["GET"])
+    def RETURN_MESSAGE():
+        headers = {
     'Authorization': 'Bearer ' + direct_line_secret,
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    "Upgrade": "websocket",
+    "Connection": "upgrade",
     }
-
+        GET_MSG_RESPONSE = requests.get(streamUrl, headers=headers)
+        response = GET_MSG_RESPONSE.json()
+        status_code = GET_MSG_RESPONSE.status_code
+        watermark = response.get('watermark')
+        return response, status_code, response.get('watermark')
+    #CODE 101 = SWITCHING PROTOCOLS
 # Set the parameters for the request
-    data = {
-        'type': 'message',
-        'from': {
-            'id': uid
-        },
-        'text': msg
-    }
-  
-    # Send the request to the Direct Line API
-    response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities/watermark={watermark}', json=data, headers=headers)
+    
+    return "ActivityHandler"
+   
 
-    # Print the response status code
-    print(response.status_code)
-    return response.json()
-@app.route('/GET_CONVERSATION', methods = ["GET"])
-def GET_COVERSATION():
+@app.route('/START_CONVERSATION', methods = ["GET"])
+def StartConversation():
     direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
    
     headers = {
     'Authorization': 'Bearer ' + direct_line_secret,
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    
     }
     response = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=headers)
     return response.json()
-    return jsonify({"conversationID": response.json().get('conversationId'), "streamUrl": response.json().get('streamUrl')})
-
-
 # # Replace YOUR_DIRECT_LINE_SECRET with your bot's Direct Line secret
 #     direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
 
