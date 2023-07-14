@@ -188,10 +188,49 @@ def StartConversation():
 #     #     return process_msg(msg.replace('%20', ' '), name)
 #     #     # return f'Your message is:', msg.replace('%20', ' ')
 #     # return PROCESS_MESSAGE(uid, name, msg)
+@app.route('/SEND_AND_RECEIVE_MESSAGE', methods = ["GET"])
+def SEND_AND_RECEIVE_MESSAGE():
+    direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
+  
+    secret_headers = {
+    'Authorization': 'Bearer ' + direct_line_secret,
+    
+    
+    }
+    #GENERATE TOKEN
+    response = requests.post('https://directline.botframework.com/v3/directline/tokens/generate', headers=secret_headers)
+    token = response.json().get('token')
+    
+    #START CONVERSATION
+    token_headers = secret_headers = {
+    'Authorization': 'Bearer ' + token,
    
     
-    
-       
+    } 
+    start_conversation = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=token_headers)
+    conversation_id = start_conversation.json().get('conversationId')
+
+    #REFRESH TOKEN
+    refresh_token = requests.post('https://directline.botframework.com/v3/directline/tokens/refresh', headers=token_headers)
+    new_token = refresh_token.json().get('token')
+    message_headers = {
+    'Authorization': 'Bearer ' + new_token,
+    'Content-Type': 'application/json',
+    }
+    body = {
+        "type": "message",
+        "text": "What is this app for?",
+        "from": {
+            "id": '12345'
+        }
+
+    }
+    #SEND ACTIVITY
+    send_message = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers, json= body
+    )
+    #GET RESPONSE
+    get_response = requests.get(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers)
+    return get_response.json()
 
 
 
