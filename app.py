@@ -112,6 +112,7 @@ def POST_MESSAGE():
         "text": msg
         }
     response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=headers, json=data)
+    return response
     return response.status_code, response.json()
 @app.route('/GET_MESSAGE', methods = ["POST"])
 def RETURN_MESSAGE():
