@@ -26,6 +26,7 @@ def RECEIVE_MESSAGE():
     msg = request.json.get('msg')
     uid = request.json.get('uid')
     name = request.json.get('name')
+    conversation_id = request.json.get('conversation_id')
     direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
     if not (msg and uid and name):
          return Exception('System Error: Request is invalid and cannot be accessed')
@@ -44,12 +45,16 @@ def RECEIVE_MESSAGE():
     }
 
     # Send the request to the Direct Line API
-    response = requests.post('https://directline.botframework.com/v3/directline/conversations/YOUR_CONVERSATION_ID/activities', json=data, headers=headers)
+    response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{name}/activities', json=data, headers=headers)
 
     # Print the response status code
     print(response.status_code)
     return response.json()
-  
+@app.route('/GET_COVERSATION_ID', methods = ["GET"])
+def GET_COVERSATION_ID():
+    response = requests.post('https://directline.botframework.com/v3/directline/conversations')
+    return response.json().get('conversationId')
+
 
 # # Replace YOUR_DIRECT_LINE_SECRET with your bot's Direct Line secret
 #     direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
