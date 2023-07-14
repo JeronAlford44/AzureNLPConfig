@@ -188,8 +188,10 @@ def StartConversation():
 #     #     return process_msg(msg.replace('%20', ' '), name)
 #     #     # return f'Your message is:', msg.replace('%20', ' ')
 #     # return PROCESS_MESSAGE(uid, name, msg)
-@app.route('/SEND_AND_RECEIVE_MESSAGE', methods = ["GET"])
+@app.route('/SEND_AND_RECEIVE_MESSAGE', methods = ["POST"])
 def SEND_AND_RECEIVE_MESSAGE():
+    msg = request.json.get('msg')
+    uid = request.json.get('uid')
     direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
   
     secret_headers = {
@@ -219,9 +221,9 @@ def SEND_AND_RECEIVE_MESSAGE():
     }
     body = {
         "type": "message",
-        "text": "What is this app for?",
+        "text": msg,
         "from": {
-            "id": '12345'
+            "id": uid
         }
 
     }
@@ -230,7 +232,7 @@ def SEND_AND_RECEIVE_MESSAGE():
     )
     #GET RESPONSE
     get_response = requests.get(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers)
-    return get_response.json()
+    return get_response.json().get('activities')[-1].get('text')
 
 
 
