@@ -68,7 +68,7 @@ def MessageActivityHandler():
     #     }
     #     response = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=headers)
     #     return response.json()
-@app.route('/RECONNECT', methods = ["GET"])
+@app.route('/RECONNECT', methods = ["POST"])
 def RECONNECT():   
     direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
     msg = request.json.get('msg')
@@ -86,7 +86,7 @@ def RECONNECT():
     requests.get(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}?watermark={watermark}', headers= headers)
 
     pass
-@app.route('/POST_MESSAGE', methods = ["GET"])
+@app.route('/POST_MESSAGE', methods = ["POST"])
 def POST_MESSAGE():
     direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
     msg = request.json.get('msg')
@@ -112,7 +112,7 @@ def POST_MESSAGE():
         }
     response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=headers, json=data)
     return response.status_code, response.json()
-@app.route('/GET_MESSAGE', methods = ["GET"])
+@app.route('/GET_MESSAGE', methods = ["POST"])
 def RETURN_MESSAGE():
     direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
     msg = request.json.get('msg')
