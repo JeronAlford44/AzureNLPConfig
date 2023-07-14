@@ -92,7 +92,7 @@ def POST_MESSAGE():
     msg = request.json.get('msg')
     uid = request.json.get('uid')
     # name = request.json.get('name')
-    conversation_id = request.json.get('conversation_id')
+   
     # locale = request.json.get('locale')
     # watermark = request.json.get('watermark')
     """after "/StartConversation" is handled"""
@@ -129,7 +129,8 @@ def RETURN_MESSAGE():
 'Content-Type': 'application/json',
 "Upgrade": "websocket",
 "Connection": "upgrade",
-}
+}   
+    return "working"
     GET_MSG_RESPONSE = requests.get(streamUrl, headers=headers)
     response = GET_MSG_RESPONSE.json()
     status_code = GET_MSG_RESPONSE.status_code
