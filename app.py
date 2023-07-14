@@ -45,7 +45,7 @@ def RECEIVE_MESSAGE():
     }
 
     # Send the request to the Direct Line API
-    response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{name}/activities', json=data, headers=headers)
+    response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/L2Za2bSAcnFGDZCYF5hT3r-us/activities', json=data, headers=headers)
 
     # Print the response status code
     print(response.status_code)
@@ -59,7 +59,7 @@ def GET_COVERSATION_ID():
     'Content-Type': 'application/json'
     }
     response = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=headers)
-    return response.json()
+    return response.json().get('conversationId')
 
 
 # # Replace YOUR_DIRECT_LINE_SECRET with your bot's Direct Line secret
