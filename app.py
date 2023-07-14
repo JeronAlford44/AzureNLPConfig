@@ -104,11 +104,12 @@ def POST_MESSAGE():
     
     }
     data = {
-        'type': 'message',
-        'from': {
-            'id': uid
+        "locale": "en-us",    
+        "type": "message",
+        "from": {
+            "id": uid
         },
-        'text': msg
+        "text": msg
         }
     response = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=headers, json=data)
     return response.status_code, response.json()
