@@ -123,8 +123,8 @@ def RETURN_MESSAGE():
     watermark = request.json.get('watermark')
     """after "/StartConversation" is handled"""
     conversation_id = request.json.get('conversation_id')
-    streamUrl = request.json.get('streamUrl')
-    #.replace("watermark=-&","")
+    streamUrl = request.json.get('streamUrl').replace("watermark=-&","")
+    return streamUrl
     headers = {
 'Authorization': 'Bearer ' + direct_line_secret,
 'Content-Type': 'application/json',
