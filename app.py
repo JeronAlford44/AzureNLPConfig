@@ -219,6 +219,7 @@ def SEND_AND_RECEIVE_MESSAGE():
     
     
     new_token = refresh_token.json().get('token')
+    return "ok"
     message_headers = {
     'Authorization': 'Bearer ' + new_token,
     'Content-Type': 'application/json',
