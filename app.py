@@ -239,7 +239,7 @@ def SEND_AND_RECEIVE_MESSAGE():
         
         #GET RESPONSE
         get_response = requests.get(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers)
-        return get_response.json().get('activities')[-1].get('text')
+        return jsonify({"msg": get_response.json().get('activities')[-1].get('text')})
     except:
         return "CONNECTION ERROR"
 
