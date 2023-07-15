@@ -192,25 +192,26 @@ def StartConversation():
 def SEND_AND_RECEIVE_MESSAGE():
     msg = request.json.get('msg')
     uid = request.json.get('uid')
-    direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
+    token = request.json.get('token')
+    # direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
   
-    secret_headers = {
-    'Authorization': 'Bearer ' + direct_line_secret,
+    # secret_headers = {
+    # 'Authorization': 'Bearer ' + direct_line_secret,
     
     
-    }
+    # }
     #GENERATE TOKEN
-    response = requests.post('https://directline.botframework.com/v3/directline/tokens/generate', headers=secret_headers)
-    token = response.json().get('token')
+    # response = requests.post('https://directline.botframework.com/v3/directline/tokens/generate', headers=secret_headers)
+    # token = response.json().get('token')
     
     #START CONVERSATION
-    token_headers = secret_headers = {
+    token_headers = {
     'Authorization': 'Bearer ' + token,
    
     
     } 
-    start_conversation = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=token_headers)
-    conversation_id = start_conversation.json().get('conversationId')
+    # start_conversation = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=token_headers)
+    # conversation_id = start_conversation.json().get('conversationId')
 
     #REFRESH TOKEN
     refresh_token = requests.post('https://directline.botframework.com/v3/directline/tokens/refresh', headers=token_headers)
@@ -234,6 +235,29 @@ def SEND_AND_RECEIVE_MESSAGE():
     get_response = requests.get(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers)
     return get_response.json().get('activities')[-1].get('text')
 
+@app.route("/NEW_CHAT_CREDENTIALS", methods = ["POST"])
+def GET_CREDENTIALS():
+    uid = request.json.get('uid')
+    direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
+  
+    secret_headers = {
+    'Authorization': 'Bearer ' + direct_line_secret,
+    
+    
+    }
+    #GENERATE TOKEN
+    response = requests.post('https://directline.botframework.com/v3/directline/tokens/generate', headers=secret_headers)
+    token = response.json().get('token')
+    
+    #START CONVERSATION
+    token_headers = secret_headers = {
+    'Authorization': 'Bearer ' + token,
+   
+    
+    } 
+    start_conversation = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=token_headers)
+    conversation_id = start_conversation.json().get('conversationId')
+    return jsonify({"conversation_id": conversation_id, "token": token})
 
 
 
