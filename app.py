@@ -216,6 +216,7 @@ def SEND_AND_RECEIVE_MESSAGE():
 
     #REFRESH TOKEN
     refresh_token = requests.post('https://directline.botframework.com/v3/directline/tokens/refresh', headers=token_headers)
+    return "ok"
     
     new_token = refresh_token.json().get('token')
     message_headers = {
