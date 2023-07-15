@@ -219,7 +219,7 @@ def SEND_AND_RECEIVE_MESSAGE():
     
     
     new_token = refresh_token.json().get('token')
-    return "ok"
+    
     message_headers = {
     'Authorization': 'Bearer ' + new_token,
     'Content-Type': 'application/json',
@@ -235,6 +235,7 @@ def SEND_AND_RECEIVE_MESSAGE():
     #SEND ACTIVITY
     send_message = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers, json= body
     )
+    return "ok"
     #GET RESPONSE
     get_response = requests.get(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers)
     return get_response.json().get('activities')[-1].get('text')
