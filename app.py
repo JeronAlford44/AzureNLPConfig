@@ -29,17 +29,10 @@ def SEND_AND_RECEIVE_MESSAGE():
     try:
         token_headers = {
         'Authorization': 'Bearer ' + token,
-    
-        
         } 
-      
-
         #REFRESH TOKEN
         refresh_token = requests.post('https://directline.botframework.com/v3/directline/tokens/refresh', headers=token_headers)
-        
-        
         new_token = refresh_token.json().get('token')
-    
         message_headers = {
         'Authorization': 'Bearer ' + new_token,
         'Content-Type': 'application/json',
@@ -50,12 +43,10 @@ def SEND_AND_RECEIVE_MESSAGE():
             "from": {
                 "id": uid
             }
-
         }
         #SEND ACTIVITY
         send_message = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers, json= body
         )
-        
         #GET RESPONSE
         get_response = requests.get(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers)
         return jsonify({"msg": get_response.json().get('activities')[-1].get('text')})
@@ -66,21 +57,15 @@ def SEND_AND_RECEIVE_MESSAGE():
 def GET_CREDENTIALS():
     uid = request.json.get('uid')
     direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
-  
     secret_headers = {
     'Authorization': 'Bearer ' + direct_line_secret,
-    
-    
     }
     #GENERATE TOKEN
     response = requests.post('https://directline.botframework.com/v3/directline/tokens/generate', headers=secret_headers)
     token = response.json().get('token')
-    
     #START CONVERSATION
     token_headers = {
     'Authorization': 'Bearer ' + token,
-   
-    
     } 
     start_conversation = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=token_headers)
     conversation_id = start_conversation.json().get('conversationId')
