@@ -193,6 +193,7 @@ def SEND_AND_RECEIVE_MESSAGE():
     msg = request.json.get('msg')
     uid = request.json.get('uid')
     token = request.json.get('token')
+    conversation_id = request.json.get('conversation_id')
     # direct_line_secret = 'u_6jUVjegJI.qhi8oQuDDrXQ5wUv9fj6Lvy44Z7qLjZzUA1yxiSOIDE'
   
     # secret_headers = {
@@ -215,7 +216,7 @@ def SEND_AND_RECEIVE_MESSAGE():
 
     #REFRESH TOKEN
     refresh_token = requests.post('https://directline.botframework.com/v3/directline/tokens/refresh', headers=token_headers)
-    return "ok"
+    
     new_token = refresh_token.json().get('token')
     message_headers = {
     'Authorization': 'Bearer ' + new_token,
