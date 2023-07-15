@@ -206,39 +206,42 @@ def SEND_AND_RECEIVE_MESSAGE():
     # token = response.json().get('token')
     
     #START CONVERSATION
-    token_headers = {
-    'Authorization': 'Bearer ' + token,
-   
+    try:
+        token_headers = {
+        'Authorization': 'Bearer ' + token,
     
-    } 
-    # start_conversation = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=token_headers)
-    # conversation_id = start_conversation.json().get('conversationId')
+        
+        } 
+        # start_conversation = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=token_headers)
+        # conversation_id = start_conversation.json().get('conversationId')
 
-    #REFRESH TOKEN
-    refresh_token = requests.post('https://directline.botframework.com/v3/directline/tokens/refresh', headers=token_headers)
+        #REFRESH TOKEN
+        refresh_token = requests.post('https://directline.botframework.com/v3/directline/tokens/refresh', headers=token_headers)
+        
+        
+        new_token = refresh_token.json().get('token')
     
-    
-    new_token = refresh_token.json().get('token')
-   
-    message_headers = {
-    'Authorization': 'Bearer ' + new_token,
-    'Content-Type': 'application/json',
-    }
-    body = {
-        "type": "message",
-        "text": msg,
-        "from": {
-            "id": uid
+        message_headers = {
+        'Authorization': 'Bearer ' + new_token,
+        'Content-Type': 'application/json',
         }
+        body = {
+            "type": "message",
+            "text": msg,
+            "from": {
+                "id": uid
+            }
 
-    }
-    #SEND ACTIVITY
-    send_message = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers, json= body
-    )
-    
-    #GET RESPONSE
-    get_response = requests.get(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers)
-    return get_response.json().get('activities')[-1].get('text')
+        }
+        #SEND ACTIVITY
+        send_message = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers, json= body
+        )
+        
+        #GET RESPONSE
+        get_response = requests.get(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers)
+        return get_response.json().get('activities')[-1].get('text')
+    except:
+        return "CONNECTION ERROR"
 
 @app.route("/NEW_CHAT_CREDENTIALS", methods = ["POST"])
 def GET_CREDENTIALS():
