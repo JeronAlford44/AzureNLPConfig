@@ -19,6 +19,7 @@ def home():
 
 @app.route('/SEND_AND_RECEIVE_MESSAGE', methods = ["POST"])
 def SEND_AND_RECEIVE_MESSAGE():
+    
     msg = request.json.get('msg')
     uid = request.json.get('uid')
     token = request.json.get('token')
@@ -32,6 +33,8 @@ def SEND_AND_RECEIVE_MESSAGE():
         } 
         #REFRESH TOKEN
         refresh_token = requests.post('https://directline.botframework.com/v3/directline/tokens/refresh', headers=token_headers)
+        if refresh_token.status_code > 400:
+            return jsonify({"msg": '', "error": f"Error {refresh_token.status_code}: Could not connect to server"})
         new_token = refresh_token.json().get('token')
         message_headers = {
         'Authorization': 'Bearer ' + new_token,
@@ -47,11 +50,16 @@ def SEND_AND_RECEIVE_MESSAGE():
         #SEND ACTIVITY
         send_message = requests.post(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers, json= body
         )
+        if send_message.status_code > 400:
+            return jsonify({"msg": '', "error": f"Error {send_message.status_code}: Could not connect to server"})
         #GET RESPONSE
         get_response = requests.get(f'https://directline.botframework.com/v3/directline/conversations/{conversation_id}/activities', headers=message_headers)
-        return jsonify({"msg": get_response.json().get('activities')[-1].get('text')})
+        if get_response.status_code > 400:
+            return jsonify({"msg": '', "error": f"Error {get_response.status_code} : Could not connect to server"})
+        return jsonify({"msg": get_response.json().get('activities')[-1].get('text'), "error": "None"})
     except:
-        return "CONNECTION ERROR"
+        error = "Error: Could not connect to server" 
+        return jsonify({"msg": '', "error": error})
 
 @app.route("/NEW_CHAT_CREDENTIALS", methods = ["POST"])
 def GET_CREDENTIALS():
@@ -62,14 +70,18 @@ def GET_CREDENTIALS():
     }
     #GENERATE TOKEN
     response = requests.post('https://directline.botframework.com/v3/directline/tokens/generate', headers=secret_headers)
+    if response.status_code > 400:
+        return jsonify({"conversation_id": '', "token": '', "error": f"Error {response.status_code}: Could not connect to server"})
     token = response.json().get('token')
     #START CONVERSATION
     token_headers = {
     'Authorization': 'Bearer ' + token,
     } 
     start_conversation = requests.post('https://directline.botframework.com/v3/directline/conversations', headers=token_headers)
+    if start_conversation.status_code > 400:
+        return jsonify({"conversation_id": '', "token": '', "error": f"Error {start_conversation.status_code}: Could not connect to server"})
     conversation_id = start_conversation.json().get('conversationId')
-    return jsonify({"conversation_id": conversation_id, "token": token})
+    return jsonify({"conversation_id": conversation_id, "token": token, "error": "None"})
 
 
 
