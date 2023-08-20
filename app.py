@@ -109,8 +109,10 @@ def GET_INTENT():
     "stringIndexType": "TextElement_V8"
   }
 }
-    response = requests.post(f'{endpoint}/language/:analyze-conversations?api-version={API_VERSION}', headers= intent_headers, body= body)
+
     return jsonify({"msg":"hello"})
+    response = requests.post(f'{endpoint}/language/:analyze-conversations?api-version={API_VERSION}', headers= intent_headers, body= body)
+    
     pass
 
 
