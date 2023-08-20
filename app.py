@@ -61,7 +61,7 @@ def GET_INTENT():
     uid = str(request.json.get('uid'))
     msg = str(request.json.get("msg"))
     sessionId = str(request.json.get("sessionId"))
-    CREATE_PREDICTION_REQUEST(uid, msg, sessionId)
+    return CREATE_PREDICTION_REQUEST(uid, msg, sessionId)
     pass
 
 
