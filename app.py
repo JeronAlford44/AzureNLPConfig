@@ -86,8 +86,9 @@ def GET_CREDENTIALS():
 
 @app.route("/TEST_UTTERANCE", methods = ["POST"])
 def GET_INTENT():
-    uid = request.json.get('uid')
-    msg = request.json.get("msg")
+    uid = str(request.json.get('uid'))
+    msg = str(request.json.get("msg"))
+    sessionId = str(request.json.get("sessionId"))
     key= "9049133675e64b37975d060c12cdb8a5"
     endpoint='https://plw-bot-2.cognitiveservices.azure.com'
     API_VERSION = '2023-04-01'
@@ -99,7 +100,7 @@ def GET_INTENT():
   "kind": "Conversation",
   "analysisInput": {
     "conversationItem": {
-      "id": 1,
+      "id": sessionId,
       "participantId": uid,
       "text": msg
     }
