@@ -99,7 +99,7 @@ def GET_INTENT():
   "kind": "Conversation",
   "analysisInput": {
     "conversationItem": {
-      "id": 1,
+      "id": uuid.uuid4(),
       "participantId": uid,
       "text": msg
     }
