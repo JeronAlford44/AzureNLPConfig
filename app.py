@@ -95,7 +95,7 @@ def GET_INTENT():
         "Ocp-Apim-Subscription-Key": key,
           'Content-Type': 'application/json',
     }
-    body = {
+    data = {
   "kind": "Conversation",
   "analysisInput": {
     "conversationItem": {
@@ -112,7 +112,7 @@ def GET_INTENT():
 }
 
 
-    response = requests.post(f'{endpoint}/language/:analyze-conversations?api-version={API_VERSION}', headers= intent_headers, body= body)
+    response = requests.post(f'{endpoint}/language/:analyze-conversations?api-version={API_VERSION}', headers= intent_headers,json = data)
     return response.json()
     pass
 
