@@ -105,7 +105,7 @@ def GET_INTENT():
     }
   },
   "parameters": {
-    "projectName": "plw-bot-2",
+    "projectName": "plw-bot-2-botv1",
     "deploymentName": "deployment1.0",
     "stringIndexType": "TextElement_V8"
   }
