@@ -1,7 +1,7 @@
 from flask import Flask,jsonify, request, redirect
 import datetime
 import os
-from process_msg import process_msg
+
 from flask_cors import CORS
 import requests
 import uuid
@@ -21,7 +21,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route('/')
+@app.route('/', methods = ["GET"])
 def home():
     return 'Home Page Route'
 
@@ -32,16 +32,14 @@ def HANDLE_ACTIVITY():
     uid = request.json.get('uid')
     token = request.json.get('token')
     conversation_id = request.json.get('conversation_id')
-    new_token = REFRESH_TOKEN(token, uid, msg)
+    
     
     
     try:
-        
+        #REFRESH TOLEN
         new_token = REFRESH_TOKEN(token, uid, msg)
-    
-        
+        #SEND MESSAGE
         SEND_MESSAGE(conversation_id, new_token, uid, msg)
-        
         #GET RESPONSE
         response = GET_RESPONSE(conversation_id, new_token)
         return response
@@ -51,9 +49,11 @@ def HANDLE_ACTIVITY():
 
 @app.route("/NEW_CHAT_CREDENTIALS", methods = ["POST"])
 def GET_CREDENTIALS():
+    #GENERATE A TOKEN
     token = GENERATE_TOKEN()
+    #START CONVERSATION WITH AZURE
     return START_CONVERSATION(token)
-    #START CONVERSATION
+    
    
 
 @app.route("/TEST_UTTERANCE", methods = ["POST"])
