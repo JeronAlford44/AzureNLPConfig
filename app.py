@@ -83,8 +83,17 @@ def GET_CREDENTIALS():
     conversation_id = start_conversation.json().get('conversationId')
     return jsonify({"conversation_id": conversation_id, "token": token, "error": "None"})
 
-
-
+@app.route("/TEST_UTTERANCE", methods = ["POST"])
+def GET_INTENT():
+    key= "9049133675e64b37975d060c12cdb8a5"
+    endpoint='https://plw-bot-2.cognitiveservices.azure.com/'
+    API_VERSION = '2023-04-01'
+    intent_headers = {
+        "Ocp-Apim-Subscription-Key": key
+    }
+    response = requests.post(f'{endpoint}/language/:analyze-conversations?api-version={API_VERSION}', headers= intent_headers)
+    return response
+    pass
 
 
 
