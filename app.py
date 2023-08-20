@@ -4,6 +4,7 @@ import os
 from process_msg import process_msg
 from flask_cors import CORS
 import requests
+import uuid
 # from botframework.connector import ConnectorClient
 # from botframework.connector.auth import AzureActiveDirectoryAuthentication
 
@@ -85,13 +86,30 @@ def GET_CREDENTIALS():
 
 @app.route("/TEST_UTTERANCE", methods = ["POST"])
 def GET_INTENT():
+    uid = request.json.get('uid')
+    msg = request.json.get("msg")
     key= "9049133675e64b37975d060c12cdb8a5"
     endpoint='https://plw-bot-2.cognitiveservices.azure.com/'
     API_VERSION = '2023-04-01'
     intent_headers = {
         "Ocp-Apim-Subscription-Key": key
     }
-    response = requests.post(f'{endpoint}/language/:analyze-conversations?api-version={API_VERSION}', headers= intent_headers)
+    body = {
+  "kind": "Conversation",
+  "analysisInput": {
+    "conversationItem": {
+      "id": uuid.uuid4(),
+      "participantId": uid,
+      "text": msg
+    }
+  },
+  "parameters": {
+    "projectName": "plw-bot-2",
+    "deploymentName": "deployment1.0",
+    "stringIndexType": "TextElement_V8"
+  }
+}
+    response = requests.post(f'{endpoint}/language/:analyze-conversations?api-version={API_VERSION}', headers= intent_headers, body= body)
     return response
     pass
 
