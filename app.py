@@ -89,7 +89,7 @@ def GET_INTENT():
     uid = request.json.get('uid')
     msg = request.json.get("msg")
     key= "9049133675e64b37975d060c12cdb8a5"
-    endpoint='https://plw-bot-2.cognitiveservices.azure.com/'
+    endpoint='https://plw-bot-2.cognitiveservices.azure.com'
     API_VERSION = '2023-04-01'
     intent_headers = {
         "Ocp-Apim-Subscription-Key": key
