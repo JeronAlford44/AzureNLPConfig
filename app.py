@@ -92,7 +92,8 @@ def GET_INTENT():
     endpoint='https://plw-bot-2.cognitiveservices.azure.com'
     API_VERSION = '2023-04-01'
     intent_headers = {
-        "Ocp-Apim-Subscription-Key": key
+        "Ocp-Apim-Subscription-Key": key,
+          'Content-Type': 'application/json',
     }
     body = {
   "kind": "Conversation",
