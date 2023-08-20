@@ -99,7 +99,7 @@ def GET_INTENT():
   "kind": "Conversation",
   "analysisInput": {
     "conversationItem": {
-      "id": uuid.uuid4(),
+      "id": 1,
       "participantId": uid,
       "text": msg
     }
@@ -113,7 +113,7 @@ def GET_INTENT():
 
 
     response = requests.post(f'{endpoint}/language/:analyze-conversations?api-version={API_VERSION}', headers= intent_headers, body= body)
-    return jsonify({"res":response})
+    return response.json()
     pass
 
 
