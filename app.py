@@ -110,9 +110,9 @@ def GET_INTENT():
   }
 }
 
-    return jsonify({"msg":"hello"})
+
     response = requests.post(f'{endpoint}/language/:analyze-conversations?api-version={API_VERSION}', headers= intent_headers, body= body)
-    
+    return jsonify(response)
     pass
 
 
