@@ -1,0 +1,2 @@
+def GenerateAnswer(body):
+    pass
